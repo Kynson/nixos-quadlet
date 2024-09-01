@@ -465,7 +465,7 @@ in {
   };
 
   config = let
-    configRelPath = "containers/systemd/${name}.container";
+    configRelPath = "containers/systemd/users/${name}.container";
     containerName = if config.containerConfig.name != null
       then config.containerConfig.name
       else name;
@@ -473,6 +473,7 @@ in {
     unitConfig = {
       Unit = {
         Description = "Podman container ${name}";
+        After = "network-online.service";
       } // config.unitConfig;
       Install = {
         WantedBy = if config.autoStart then [ "default.target" ] else [];

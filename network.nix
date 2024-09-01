@@ -122,7 +122,7 @@ in {
   };
 
   config = let
-    configRelPath = "containers/systemd/${name}.network";
+    configRelPath = "containers/systemd/users/${name}.network";
     networkName = if config.networkConfig.name != null
         then config.networkConfig.name
         else "systemd-${name}";
