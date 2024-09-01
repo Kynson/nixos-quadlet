@@ -7,6 +7,6 @@
       ExecStart = "/run/current-system/sw/bin/bash -c 'until systemctl is-active network-online.target; do sleep 1; done'";
       RemainAfterExit = "yes";
     };
-    wantedBy = ["default.target"]
+    wantedBy = ["default.target"];
   };
 }
