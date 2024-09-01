@@ -59,7 +59,7 @@ in {
       (pkgs.linkFarm "quadlet-service-symlinks" (
         map (p: {
           name = "etc/systemd/user/${p._unitName}";
-          path = "/run/systemd/generator/${p._unitName}";
+          path = "/run/user/${containersOwnerUID}/systemd/generator/${p._unitName}";
         }) allObjects))
     ];
     # Inject X-RestartIfChanged=${hash} for NixOS to detect changes.
