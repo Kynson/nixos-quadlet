@@ -33,7 +33,7 @@ in {
         default = { };
       };
 
-      containerOwnerUID = mkOption {
+      containersOwnerUID = mkOption {
         type = types.int;
         default = 0;
       };
@@ -42,7 +42,7 @@ in {
 
   config = let
     allObjects = (attrValues cfg.containers) ++ (attrValues cfg.networks);
-    containerOwner = cfg.containerOwnerUID;
+    containersOwnerUID = cfg.containersOwnerUID;
   in {
     virtualisation.podman.enable = true;
     environment.etc = mergeAttrsList (
@@ -50,7 +50,7 @@ in {
         "containers/systemd/users/${p._configName}" = {
           text = p._configText;
           mode = "0600";
-          uid = containerOwnerUID;
+          uid = containersOwnerUID;
         };
       }) allObjects);
     # The symlinks are not necessary for the services to be honored by systemd,
