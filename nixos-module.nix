@@ -63,7 +63,7 @@ in {
         }) allObjects))
     ];
     # Inject X-RestartIfChanged=${hash} for NixOS to detect changes.
-    systemd.units = mergeAttrsList (
+    systemd.user.units = mergeAttrsList (
       map (p: {
         ${p._unitName} = {
           overrideStrategy = "asDropin";
