@@ -43,11 +43,12 @@ in {
   config = let
     allObjects = (attrValues cfg.containers) ++ (attrValues cfg.networks);
     containersOwnerUID = cfg.containersOwnerUID;
+    containersOwnerUIDString = builtins.toString cfg.containersOwnerUID;
   in {
     virtualisation.podman.enable = true;
     environment.etc = mergeAttrsList (
       map (p: {
-        "containers/systemd/users/${p._configName}" = {
+        "containers/systemd/users/${containersOwnerUIDString}/${p._configName}" = {
           text = p._configText;
           mode = "0600";
           uid = containersOwnerUID;
@@ -58,8 +59,8 @@ in {
     systemd.packages = [
       (pkgs.linkFarm "quadlet-service-symlinks" (
         map (p: {
-          name = "etc/systemd/user/${p._unitName}";
-          path = "/run/user/${builtins.toString containersOwnerUID}/systemd/generator/${p._unitName}";
+          name = "etc/systemd/user/${containersOwnerUIDString}/${p._unitName}";
+          path = "/run/user/${containersOwnerUIDString}/systemd/generator/${p._unitName}";
         }) allObjects))
     ];
     # Inject X-RestartIfChanged=${hash} for NixOS to detect changes.
