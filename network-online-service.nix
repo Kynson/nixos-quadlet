@@ -1,5 +1,5 @@
 {
-  systemd.user.services."network-online" = {
+  systemd.user.services.network-online = {
     enable = true;
     description = "User level version of the system level target network-online.target";
     serviceConfig = {

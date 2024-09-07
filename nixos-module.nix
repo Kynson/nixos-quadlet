@@ -63,12 +63,16 @@ in {
           path = "/run/user/${containersOwnerUIDString}/systemd/generator/${p._unitName}";
         }) allObjects))
     ];
-    # Inject X-RestartIfChanged=${hash} for NixOS to detect changes.
+    # Inject X-Restart-Triggers=${hash} for NixOS to detect changes.
+    # Note that currently NixOS does not compare user unit for restart. See https://github.com/NixOS/nixpkgs/issues/246611
     systemd.user.units = mergeAttrsList (
       map (p: {
         ${p._unitName} = {
           overrideStrategy = "asDropin";
-          text = "[Unit]\nX-RestartIfChanged=${builtins.hashString "sha256" p._configText}";
+          text = ''
+            [Unit]
+            X-Restart-Triggers=${builtins.hashString "sha256" p._configText}
+          '';
         };
       }) allObjects);
   };
